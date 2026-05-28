@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medsmart/models/medication_model.dart';
-import 'package:medsmart/services/firestore_service.dart';
+import 'package:smartmed_app/models/medication_model.dart';
+import 'package:smartmed_app/services/firestore_service.dart';
 import 'package:uuid/uuid.dart';
 
 class AddMedicationScreen extends StatefulWidget {

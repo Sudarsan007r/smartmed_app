@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class CaregiverModel {
   final String uid;
   final String name;

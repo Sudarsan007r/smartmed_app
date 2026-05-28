@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:medsmart/services/auth_services.dart';
-import 'package:medsmart/services/firestore_service.dart';
-import 'package:medsmart/models/elder_model.dart';
-import 'package:medsmart/models/caregiver_model.dart';
-import 'package:medsmart/models/medication_model.dart';
-import 'package:medsmart/screens/add_medication_screen.dart';
-import 'package:medsmart/screens/elder_profile_screen.dart';
-import 'package:medsmart/screens/elder_detail_screen.dart';
-import 'package:medsmart/screens/log_vitals_screen.dart';
-import 'package:medsmart/models/doctor_model.dart';
-import 'package:medsmart/models/vital_model.dart';
-import 'package:medsmart/models/alert_model.dart';
-import 'package:medsmart/services/alert_service.dart';
-import 'package:medsmart/services/notification_service.dart';
-import 'package:medsmart/services/n8n_service.dart';
+import 'package:smartmed_app/services/auth_services.dart';
+import 'package:smartmed_app/services/firestore_service.dart';
+import 'package:smartmed_app/models/elder_model.dart';
+import 'package:smartmed_app/models/caregiver_model.dart';
+import 'package:smartmed_app/models/medication_model.dart';
+import 'package:smartmed_app/screens/add_medication_screen.dart';
+import 'package:smartmed_app/screens/elder_profile_screen.dart';
+import 'package:smartmed_app/screens/elder_detail_screen.dart';
+import 'package:smartmed_app/screens/log_vitals_screen.dart';
+import 'package:smartmed_app/models/doctor_model.dart';
+import 'package:smartmed_app/models/vital_model.dart';
+import 'package:smartmed_app/models/alert_model.dart';
+import 'package:smartmed_app/services/alert_service.dart';
+import 'package:smartmed_app/services/notification_service.dart';
+import 'package:smartmed_app/services/n8n_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'link_elder_screen.dart';
 import 'link_patient_screen.dart';
@@ -668,7 +668,7 @@ class _ElderAlertBanner extends StatelessWidget {
             color: Colors.red.shade50,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.red.shade200, width: 2),
-            boxShadow: [BoxShadow(color: Colors.red.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2))],
+            boxShadow: [BoxShadow(color: Colors.red.withValues(alpha: 0.1), blurRadius: 4, offset: const Offset(0, 2))],
           ),
           child: Column(
             children: [
@@ -727,7 +727,7 @@ class _ElderAlertBanner extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.1),
+            backgroundColor: color.withValues(alpha: 0.1),
             child: Icon(icon, color: color, size: 20),
           ),
           const SizedBox(height: 4),

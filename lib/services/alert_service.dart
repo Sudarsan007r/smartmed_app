@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:medsmart/models/vital_model.dart';
-import 'package:medsmart/services/firestore_service.dart';
-import 'package:medsmart/services/notification_service.dart';
-import 'package:medsmart/models/alert_model.dart';
-import 'package:medsmart/services/n8n_service.dart';
+import 'package:smartmed_app/models/vital_model.dart';
+import 'package:smartmed_app/services/firestore_service.dart';
+import 'package:smartmed_app/services/notification_service.dart';
+import 'package:smartmed_app/models/alert_model.dart';
+import 'package:smartmed_app/services/n8n_service.dart';
 
 class AlertService {
   final _fs = FirestoreService();

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData get vibrantTheme {
-    final baseTextTheme = GoogleFonts.latoTextTheme();
-    final headerFont = GoogleFonts.poppins();
+    final baseTextTheme = ThemeData.light().textTheme;
     
     return ThemeData(
       useMaterial3: true,
@@ -16,19 +14,18 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: const Color(0xFFF5F7FA),
       
-      // Typography: Poppins for Headers, Lato for Body
       textTheme: baseTextTheme.copyWith(
-        displayLarge: headerFont.copyWith(
+        displayLarge: const TextStyle(
           fontSize: 36, 
           fontWeight: FontWeight.bold,
           color: const Color(0xFF263238), // Blue Grey 900
         ),
-        displayMedium: headerFont.copyWith(
+        displayMedium: const TextStyle(
           fontSize: 28, 
           fontWeight: FontWeight.w600,
           color: const Color(0xFF37474F),
         ),
-        titleLarge: headerFont.copyWith(
+        titleLarge: const TextStyle(
           fontSize: 22, 
           fontWeight: FontWeight.w600,
           color: const Color(0xFF455A64),
@@ -38,7 +35,7 @@ class AppTheme {
           height: 1.5,
           color: const Color(0xFF455A64),
         ),
-        labelLarge: headerFont.copyWith(
+        labelLarge: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
@@ -46,7 +43,7 @@ class AppTheme {
       ),
       
       // Modern Card Theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 8,
         shadowColor: Colors.black.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -61,9 +58,9 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           backgroundColor: const Color(0xFF009688), // Teal
           foregroundColor: Colors.white,
-          textStyle: headerFont.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+          textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           elevation: 4,
-          shadowColor: const Color(0xFF009688).withValues(alpha: 0.4),
+          shadowColor: Color(0xFF009688).withValues(alpha: 0.4),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 // lib/screens/login_screen.dart
 import 'package:flutter/material.dart';
-import 'package:medsmart/services/auth_services.dart'; // adjust path
+import 'package:smartmed_app/services/auth_services.dart'; // adjust path
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:smartmed_app/models/elder_model.dart';
+import 'package:smartmed_app/screens/elder_profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -13,11 +14,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // Mock Data
   final String userName = "Grandpa Joe";
   bool isTaken = false;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     // Format date: "Monday, August 12"
     final String todayDate = DateFormat('EEEE, MMMM d').format(DateTime.now());
+
+    if (_selectedIndex == 2) {
+      // Show Profile Screen
+      final mockElder = ElderModel(
+        uid: 'test_elder_uid',
+        name: 'Grandpa Joe',
+        email: 'grandpa@test.com',
+        phone: '555-1234',
+        age: 75,
+        bloodType: 'O+',
+        medicalConditions: ['Hypertension', 'Type 2 Diabetes'],
+        caregiverIds: [],
+      );
+      return ElderProfileScreen(elder: mockElder);
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -92,7 +109,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         boxShadow: [
           BoxShadow(
-             color: const Color(0xFF009688).withValues(alpha: 0.3),
+            color: const Color(0xFF009688).withValues(alpha: 0.3),
              blurRadius: 15,
              offset: const Offset(0, 10),
           )
@@ -103,7 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           Text(
             "Good Morning,",
-            style: GoogleFonts.poppins(
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontSize: 24,
               color: Colors.white.withValues(alpha: 0.9),
               fontWeight: FontWeight.w500,
@@ -112,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 4),
           Text(
             name,
-            style: GoogleFonts.poppins(
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontSize: 32,
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -127,7 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             child: Text(
               date,
-              style: GoogleFonts.lato(
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 18,
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
@@ -266,7 +283,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                        ),
                        child: Text(
                          "SKIP FOR NOW",
-                         style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold),
+                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                        ),
                     ),
                   ),
@@ -333,11 +350,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
       child: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
         backgroundColor: Colors.white,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.grey.shade400,
-        selectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 14),
-        unselectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14),
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
         iconSize: 28,
         elevation: 0,
         type: BottomNavigationBarType.fixed,

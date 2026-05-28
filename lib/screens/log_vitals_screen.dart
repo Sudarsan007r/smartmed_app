@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medsmart/models/vital_model.dart';
-import 'package:medsmart/services/firestore_service.dart';
+import 'package:smartmed_app/models/vital_model.dart';
+import 'package:smartmed_app/services/firestore_service.dart';
 
 class LogVitalsScreen extends StatefulWidget {
   final String elderId;

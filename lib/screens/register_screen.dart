@@ -1,6 +1,6 @@
 // lib/screens/register_screen.dart
 import 'package:flutter/material.dart';
-import 'package:medsmart/services/auth_services.dart'; // adjust import path
+import 'package:smartmed_app/services/auth_services.dart'; // adjust import path
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

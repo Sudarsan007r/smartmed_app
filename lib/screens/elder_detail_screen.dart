@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medsmart/models/elder_model.dart';
-import 'package:medsmart/models/medication_model.dart';
-import 'package:medsmart/models/vital_model.dart';
-import 'package:medsmart/services/firestore_service.dart';
-import 'package:medsmart/services/auth_services.dart';
+import 'package:smartmed_app/models/elder_model.dart';
+import 'package:smartmed_app/models/medication_model.dart';
+import 'package:smartmed_app/models/vital_model.dart';
+import 'package:smartmed_app/models/medication_log_model.dart';
+import 'package:smartmed_app/services/firestore_service.dart';
+import 'package:smartmed_app/services/auth_services.dart';
 import 'prescribe_medication_screen.dart';
 
 class ElderDetailScreen extends StatelessWidget {
@@ -27,6 +28,7 @@ class ElderDetailScreen extends StatelessWidget {
             _buildProfileSection(context),
             _buildVitalsSection(context, fs),
             _buildMedicationsSection(context, fs),
+            _buildMedicationLogsSection(context, fs),
             _buildDoctorActions(context),
             const SizedBox(height: 20),
           ],
@@ -195,7 +197,81 @@ class ElderDetailScreen extends StatelessWidget {
                             style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.indigo)),
                       ],
                     ),
-                    trailing: Text(med.frequency.join(", "), style: const TextStyle(color: Colors.teal)),
+                    trailing: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(med.frequency.join(", "), style: const TextStyle(color: Colors.teal)),
+                        const SizedBox(height: 6),
+                        Row(mainAxisSize: MainAxisSize.min, children: [
+                          IconButton(
+                            icon: const Icon(Icons.check_circle, color: Colors.green),
+                            tooltip: 'Taken',
+                            onPressed: () async {
+                              final log = MedicationLogModel(id: '', elderId: elder.uid, medicationId: med.id, status: 'taken', timestamp: DateTime.now());
+                              await fs.logMedicationAdherence(log);
+                              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Marked as taken')));
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.block, color: Colors.red),
+                            tooltip: 'Skipped',
+                            onPressed: () async {
+                              final log = MedicationLogModel(id: '', elderId: elder.uid, medicationId: med.id, status: 'skipped', timestamp: DateTime.now());
+                              await fs.logMedicationAdherence(log);
+                              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Marked as skipped')));
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.snooze, color: Colors.orange),
+                            tooltip: 'Snoozed',
+                            onPressed: () async {
+                              final log = MedicationLogModel(id: '', elderId: elder.uid, medicationId: med.id, status: 'snoozed', timestamp: DateTime.now());
+                              await fs.logMedicationAdherence(log);
+                              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Snoozed')));
+                            },
+                          ),
+                        ])
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMedicationLogsSection(BuildContext context, FirestoreService fs) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Recent Medication Activity', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 8),
+          StreamBuilder<List<MedicationLogModel>>(
+            stream: fs.getMedicationLogsForElder(elder.uid, limit: 10),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const SizedBox.shrink();
+              final logs = snapshot.data!;
+              if (logs.isEmpty) return const Text('No medication activity logged yet.');
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: logs.length,
+                separatorBuilder: (_, __) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  final l = logs[index];
+                  return ListTile(
+                    dense: true,
+                    leading: Icon(
+                      l.status == 'taken' ? Icons.check_circle : l.status == 'skipped' ? Icons.block : Icons.snooze,
+                      color: l.status == 'taken' ? Colors.green : l.status == 'skipped' ? Colors.red : Colors.orange,
+                    ),
+                    title: Text(l.medicationId),
+                    subtitle: Text('${l.status} • ${l.timestamp.toLocal().toString().split('.').first}'),
                   );
                 },
               );

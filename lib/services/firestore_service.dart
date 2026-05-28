@@ -3,6 +3,7 @@ import '../models/medication_model.dart';
 import '../models/vital_model.dart';
 import '../models/alert_model.dart';
 import '../models/elder_model.dart';
+import '../models/medication_log_model.dart';
 import '../models/caregiver_model.dart';
 import '../models/doctor_model.dart';
 
@@ -22,6 +23,11 @@ class FirestoreService {
     await _eldersRef.doc(elder.uid).set(elder.toMap());
     // Also update the main user doc to role=elder if not set
     await _usersRef.doc(elder.uid).update({'role': 'elder'});
+  }
+
+  /// Merge-safe update for elder profile. Accepts a partial map and merges.
+  Future<void> updateElderProfile(String elderId, Map<String, dynamic> patch) async {
+    await _eldersRef.doc(elderId).set(patch, SetOptions(merge: true));
   }
 
   Stream<ElderModel> getElderStream(String elderId) {
@@ -126,6 +132,23 @@ class FirestoreService {
   Stream<List<MedicationModel>> getMedicationsForElder(String elderId) {
     return _medsRef.where('elderId', isEqualTo: elderId).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => MedicationModel.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
+    });
+  }
+
+  // --- Medication adherence logging ---
+  Future<void> logMedicationAdherence(MedicationLogModel log) async {
+    await _db.collection('medication_logs').add(log.toMap());
+  }
+
+  Stream<List<MedicationLogModel>> getMedicationLogsForElder(String elderId, {int limit = 50}) {
+    return _db
+        .collection('medication_logs')
+        .where('elderId', isEqualTo: elderId)
+        .orderBy('timestamp', descending: true)
+        .limit(limit)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => MedicationLogModel.fromMap(doc.data(), doc.id)).toList();
     });
   }
 
